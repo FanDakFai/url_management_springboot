@@ -1,16 +1,16 @@
 package org.demo.service.model;
 
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+//import javax.persistence.Entity;
+//import javax.persistence.Id;
 
 
-@Entity
+//@Entity
 public class DomainName {
   public static final Integer LOCALHOST_IP = (127 << 24 | 1);
   public static final String LOCALHOST_DN = "localhost";
 
-  @Id
+  //@Id
   private final String domainName;
   private final Integer ipv4Address;
 
