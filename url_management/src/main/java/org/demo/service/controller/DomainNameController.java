@@ -43,8 +43,9 @@ public class DomainNameController {
   @PostMapping("/domainnames")
   public ResponseEntity<DomainName> createOrUpdateDomainName(@Valid @RequestBody DomainName domainName) {
     String domainNameId = domainName.getDomainName();
-    if (domainNameId == null || domainNameId.length() == 0) {
-      return new ResponseEntity<DomainName>(HttpStatus.NOT_FOUND);
+    Integer domainNameValue = domainName.getIpv4Address();
+    if (domainNameValue == null || domainNameId == null || domainNameId.length() == 0) {
+      return new ResponseEntity<DomainName>(HttpStatus.NO_CONTENT);
     }
     DomainName foundDomainName = this.getDomainNameRepository().findById(domainNameId).orElse(null);
     if (foundDomainName != null) {
