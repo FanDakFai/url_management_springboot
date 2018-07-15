@@ -4,8 +4,12 @@ import requests
 import requests.auth
 import base64
 import sys
+import os
 
-mykey = sys.argv[1]
+try:
+   mykey = os.environ["OAUTH2_TOKEN"]
+except KeyError:
+   mykey = ""
 
 print mykey 
 
@@ -14,6 +18,11 @@ headers = {"Authorization": "Bearer " + mykey, "Content-Type": "application/x-ww
 
 response = requests.get("https://localhost:8082/domainnames", headers=headers, verify=False)
 #print "[" + str(response.raw.read()) + "]"
+
+if response.status_code == 404:
+    print "NOT FOUND - empty list"
+    exit();
+
 
 json_result = response.json()
 #print json_result
