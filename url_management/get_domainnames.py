@@ -13,11 +13,20 @@ except KeyError:
 
 print mykey 
 
+target_domain_name = None
+if len(sys.argv) >= 2:
+    target_domain_name = sys.argv[1]
+
+
 headers = {"Authorization": "Bearer " + mykey, "Content-Type": "application/x-www-form-urlencoded"}
 
 
-response = requests.get("https://localhost:8082/domainnames", headers=headers, verify=False)
-#print "[" + str(response.raw.read()) + "]"
+if target_domain_name is None:
+    response = requests.get("https://localhost:8082/domainnames", headers=headers, verify=False)
+    #print "[" + str(response.raw.read()) + "]"
+else:
+    response = requests.get("https://localhost:8082/domainnames/" + target_domain_name, headers=headers, verify=False)
+
 
 if response.status_code == 404:
     print "NOT FOUND - empty list"
@@ -35,6 +44,9 @@ def decodeIpv4Address(binAddr):
     return str(addr1) + "." + str((binAddr >> 16) & 255) + "." + str((binAddr >> 8) & 255) + "." + str(binAddr & 255)
 
 print "\n"
-for jsonitem in json_result:
-    print jsonitem[u'domainName'] + "\t->\t" + decodeIpv4Address(jsonitem[u'ipv4Address'])
 
+if target_domain_name is None:
+    for jsonitem in json_result:
+        print jsonitem[u'domainName'] + "\t->\t" + decodeIpv4Address(jsonitem[u'ipv4Address'])
+else:
+        print json_result[u'domainName'] + "\t->\t" + decodeIpv4Address(json_result[u'ipv4Address'])

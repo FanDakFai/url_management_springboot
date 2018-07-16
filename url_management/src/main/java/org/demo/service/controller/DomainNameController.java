@@ -40,6 +40,15 @@ public class DomainNameController {
     return new ResponseEntity<Iterable<DomainName>>(HttpStatus.NOT_FOUND);
   }
 
+  @GetMapping("/domainnames/{id}")
+  public ResponseEntity<DomainName> listDomainNames(@PathVariable(value = "id") String domainNameId) {
+    DomainName targetDomainName = this.getDomainNameRepository().findById(domainNameId).orElse(null);
+    if (targetDomainName == null) {
+      return new ResponseEntity<DomainName>(HttpStatus.NOT_FOUND);
+    }
+    return new ResponseEntity<DomainName>(targetDomainName, HttpStatus.OK);
+  }
+
   @PostMapping("/domainnames")
   public ResponseEntity<DomainName> createOrUpdateDomainName(@Valid @RequestBody DomainName domainName) {
     String domainNameId = domainName.getDomainName();
@@ -88,7 +97,7 @@ public class DomainNameController {
   public ResponseEntity deleteDomainName(@PathVariable(value = "id") String domainNameId) {
     DomainName targetDomainName = this.getDomainNameRepository().findById(domainNameId).orElse(null);
     if (targetDomainName == null) {
-      return new ResponseEntity<DomainName>(HttpStatus.NOT_FOUND);
+      return new ResponseEntity(HttpStatus.NOT_FOUND);
     }
     this.getDomainNameRepository().delete(targetDomainName);
     return new ResponseEntity(targetDomainName, HttpStatus.OK);
