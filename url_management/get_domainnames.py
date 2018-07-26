@@ -34,7 +34,7 @@ if response.status_code == 404:
 
 
 json_result = response.json()
-#print json_result
+print json_result
 
 
 def decodeIpv4Address(binAddr):
@@ -45,8 +45,8 @@ def decodeIpv4Address(binAddr):
 
 print "\n"
 
-if target_domain_name is None:
-    for jsonitem in json_result:
-        print jsonitem[u'domainName'] + "\t->\t" + decodeIpv4Address(jsonitem[u'ipv4Address'])
-else:
-        print json_result[u'domainName'] + "\t->\t" + decodeIpv4Address(json_result[u'ipv4Address'])
+#if target_domain_name is None:
+#    for jsonitem in json_result:
+#        print jsonitem[u'domainName'] + "\t->\t" + decodeIpv4Address(jsonitem[u'ipv4Address'])
+#else:
+#        print json_result[u'domainName'] + "\t->\t" + decodeIpv4Address(json_result[u'ipv4Address'])

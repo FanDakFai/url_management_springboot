@@ -27,7 +27,7 @@ headers = {"Authorization": "Bearer " + mykey, "Content-Type": "application/json
 #payload = json.dumps(postdata)
 
 #response = requests.put("https://localhost:8082/domainname/ubuntuhost", headers=headers, verify=False, data=payload)
-target_domain_name = "ubuntuhost"
+target_domain_name = "aoc"
 if len(sys.argv) >= 2:
     target_domain_name = sys.argv[1]
 response = requests.delete("https://localhost:8082/domainnames/" + target_domain_name, headers=headers, verify=False)

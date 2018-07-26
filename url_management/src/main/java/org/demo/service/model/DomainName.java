@@ -2,41 +2,43 @@ package org.demo.service.model;
 
 
 import javax.persistence.Entity;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.Id;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Column;
 
 
 @Entity
+@Inheritance(strategy = InheritanceType.JOINED)
 public class DomainName {
-  public static final Integer LOCALHOST_IP = (127 << 24 | 1);
-  public static final String LOCALHOST_DN = "localhost";
-
   @Id
-  private String domainName;
-  private Integer ipv4Address;
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Integer id;
+
+  @Column(unique = true)
+  private String name;
 
   public DomainName() {
-    this.domainName = null;
-    this.ipv4Address = null;
+    this.name = null;
+    this.id = null;
   }
 
-  public String getDomainName() {
-    return this.domainName;
+  public String getName() {
+    return this.name;
   }
 
-  public Integer getIpv4Address() {
-    return this.ipv4Address;
+  public Integer getId() {
+    return this.id;
   }
 
-  public void setDomainName(String domainName) {
-    this.domainName = domainName;
+  public void setName(String name) {
+    this.name = name;
   }
 
-  public void setIpv4Address(Integer ipv4Address) {
-    this.ipv4Address = ipv4Address;
-  }
-
-  public static Integer computeIpv4Address(int addr1, int addr2, int addr3, int addr4) {
-    return (addr1 << 24) | (addr2 << 16) | (addr3 << 8) | (addr4);
+  public void setId(Integer id) {
+    this.id = id;
   }
 }
 

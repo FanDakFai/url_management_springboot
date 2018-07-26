@@ -17,9 +17,17 @@ print mykey
 headers = {"Authorization": "Bearer " + mykey, "Content-Type": "application/json"}
 
 
+#    'ipv4Address': 129,
+#    'domainName': "ubuntuhost",
+
 postdata = {
-    'domainName': "ubuntuhost",
-    'ipv4Address': 129,
+    'name': "aoc",
+#    'referencedDomainName': {'name': "ubuntuhost7", 'ipv4s': [{'value': 126}]}
+    'referencedDomainName': {'name': "ubuntuhost5"}
+#   'ipv4s': [
+#       {'value': 253}
+#   ]
+
 }
 
 payload = json.dumps(postdata)
@@ -50,5 +58,5 @@ print "\n"
 #    print jsonitem[u'domainName'] + "\t->\t" + decodeIpv4Address(jsonitem[u'ipv4Address'])
 
 jsonitem = json_result
-print jsonitem[u'domainName'] + "\t->\t" + decodeIpv4Address(jsonitem[u'ipv4Address'])
+print jsonitem[u'domainName'] + "\t->\t" + decodeIpv4Address(jsonitem[u'ipv4s'])
 
