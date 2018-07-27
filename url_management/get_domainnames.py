@@ -20,12 +20,14 @@ if len(sys.argv) >= 2:
 
 headers = {"Authorization": "Bearer " + mykey, "Content-Type": "application/x-www-form-urlencoded"}
 
+#endpoint_url = "https://localhost:8082/canonicaldomainnames"
+endpoint_url = "https://localhost:8082/aliasdomainnames"
 
 if target_domain_name is None:
-    response = requests.get("https://localhost:8082/domainnames", headers=headers, verify=False)
+    response = requests.get(endpoint_url, headers=headers, verify=False)
     #print "[" + str(response.raw.read()) + "]"
 else:
-    response = requests.get("https://localhost:8082/domainnames/" + target_domain_name, headers=headers, verify=False)
+    response = requests.get(endpoint_url + target_domain_name, headers=headers, verify=False)
 
 
 if response.status_code == 404:

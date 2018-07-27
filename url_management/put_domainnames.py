@@ -22,13 +22,13 @@ headers = {"Authorization": "Bearer " + mykey, "Content-Type": "application/json
 
 
 postdata = {
-    'name': "ubuntuhost1",
-    'ipv4s': [{"value": 99}],
+    'name': "ubuntuhost5",
+    'ipv4s': [{"value": 97}],
 }
 
 payload = json.dumps(postdata)
 
-response = requests.put("https://localhost:8082/domainnames/ubuntuhost1", headers=headers, verify=False, data=payload)
+response = requests.put("https://localhost:8082/canonicaldomainnames/ubuntuhost5", headers=headers, verify=False, data=payload)
 
 print response.status_code
 print "[" + str(response.raw.read()) + "]"

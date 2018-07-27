@@ -32,6 +32,9 @@ import org.demo.service.model.Ipv4;
 @PreAuthorize("#oauth2.hasScope('read')")
 @RequestMapping(value = "/")
 public class DomainNameController {
+  private static final String DOMAINNAMES_URI           = "/domainnames";
+  private static final String CANONICAL_DOMAINNAMES_URI = "/canonicaldomainnames";
+  private static final String ALIAS_DOMAINNAMES_URI     = "/aliasdomainnames";
   private static final ObjectMapper objectMapper;
 
   @Autowired
@@ -41,8 +44,8 @@ public class DomainNameController {
   private AliasDomainNameRepository aliasDomainNameRepository;
 
 
-  @GetMapping("/domainnames")
-  public ResponseEntity<Iterable<CanonicalDomainName>> listDomainNames() {
+  @GetMapping(DomainNameController.CANONICAL_DOMAINNAMES_URI)
+  public ResponseEntity<Iterable<CanonicalDomainName>> listCanonicalDomainNames() {
     if (this.getCanonicalDomainNameRepository().count() > 0) {
       Iterable<CanonicalDomainName> result
         = this.getCanonicalDomainNameRepository().findAll();
@@ -53,8 +56,8 @@ public class DomainNameController {
       HttpStatus.NOT_FOUND);
   }
 
-  @GetMapping("/domainnames/{id}")
-  public ResponseEntity<CanonicalDomainName> getDomainName(
+  @GetMapping(DomainNameController.CANONICAL_DOMAINNAMES_URI + "/{id}")
+  public ResponseEntity<CanonicalDomainName> getCanonicalDomainName(
     @PathVariable(value = "id") String name) {
     CanonicalDomainName targetDomainName
       = this.getCanonicalDomainNameRepository().findByName(name);
@@ -65,7 +68,31 @@ public class DomainNameController {
       targetDomainName, HttpStatus.OK);
   }
 
-  @PostMapping("/domainnames")
+  @GetMapping(DomainNameController.ALIAS_DOMAINNAMES_URI)
+  public ResponseEntity<Iterable<AliasDomainName>> listAliasDomainNames() {
+    if (this.getAliasDomainNameRepository().count() > 0) {
+      Iterable<AliasDomainName> result
+        = this.getAliasDomainNameRepository().findAll();
+      return new ResponseEntity<Iterable<AliasDomainName>>(
+        result, HttpStatus.OK);
+    }
+    return new ResponseEntity<Iterable<AliasDomainName>>(
+      HttpStatus.NOT_FOUND);
+  }
+
+  @GetMapping(DomainNameController.ALIAS_DOMAINNAMES_URI + "/{id}")
+  public ResponseEntity<AliasDomainName> getAliasDomainNames(
+    @PathVariable(value = "id") String name) {
+    AliasDomainName targetDomainName
+      = this.getAliasDomainNameRepository().findByName(name);
+    if (targetDomainName == null) {
+      return new ResponseEntity<AliasDomainName>(HttpStatus.NOT_FOUND);
+    }
+    return new ResponseEntity<AliasDomainName>(
+      targetDomainName, HttpStatus.OK);
+  }
+
+  @PostMapping(DomainNameController.DOMAINNAMES_URI)
   public ResponseEntity<String> createDomainName(
     @Valid @RequestBody String rawJsonStringData) {
     // @TODO: find a solution to describle the parsing or persisting errors
@@ -86,8 +113,8 @@ public class DomainNameController {
   // TODO: now to update alias domain -> simple solution: delete and create a
   //       new one any way should check that client should not put an alias
   //       domain name content
-  @PutMapping("/domainnames/{id}")
-  public ResponseEntity<CanonicalDomainName> updateDomainName(
+  @PutMapping(DomainNameController.CANONICAL_DOMAINNAMES_URI + "/{id}")
+  public ResponseEntity<CanonicalDomainName> updateCanonicalDomainName(
       @PathVariable(value = "id") String domainNameId,
       @Valid @RequestBody CanonicalDomainName domainNameDetail) {
     // Verify the put content if required information is presented
@@ -118,7 +145,7 @@ public class DomainNameController {
   }
 
   // Should support delete both alias and canonical domain name
-  @DeleteMapping("/domainnames/{id}")
+  @DeleteMapping(DomainNameController.DOMAINNAMES_URI + "/{id}")
   public ResponseEntity deleteDomainName(
       @PathVariable(value = "id") String domainNameId) {
     CanonicalDomainName cDomainName
