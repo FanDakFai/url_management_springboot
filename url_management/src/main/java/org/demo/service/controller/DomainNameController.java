@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.demo.service.repository.AliasDomainNameRepository;
 import org.demo.service.repository.CanonicalDomainNameRepository;
+import org.demo.service.repository.DomainNameRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.dao.DataAccessException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -43,6 +44,33 @@ public class DomainNameController {
   @Autowired
   private AliasDomainNameRepository aliasDomainNameRepository;
 
+  @Autowired
+  private DomainNameRepository domainNameRepository;
+
+
+  @GetMapping(DomainNameController.DOMAINNAMES_URI)
+  public ResponseEntity<Iterable<DomainName>> listDomainNames() {
+    if (this.getDomainNameRepository().count() > 0) {
+      Iterable<DomainName> result
+        = this.getDomainNameRepository().findAll();
+      return new ResponseEntity<Iterable<DomainName>>(
+        result, HttpStatus.OK);
+    }
+    return new ResponseEntity<Iterable<DomainName>>(
+      HttpStatus.NOT_FOUND);
+  }
+
+  @GetMapping(DomainNameController.DOMAINNAMES_URI + "/{id}")
+  public ResponseEntity<DomainName> getDomainName(
+    @PathVariable(value = "id") String name) {
+    DomainName targetDomainName
+      = this.getDomainNameRepository().findByName(name);
+    if (targetDomainName == null) {
+      return new ResponseEntity<DomainName>(HttpStatus.NOT_FOUND);
+    }
+    return new ResponseEntity<DomainName>(
+      targetDomainName, HttpStatus.OK);
+  }
 
   @GetMapping(DomainNameController.CANONICAL_DOMAINNAMES_URI)
   public ResponseEntity<Iterable<CanonicalDomainName>> listCanonicalDomainNames() {
@@ -183,6 +211,10 @@ public class DomainNameController {
 
   private AliasDomainNameRepository getAliasDomainNameRepository() {
     return this.aliasDomainNameRepository;
+  }
+
+  private DomainNameRepository getDomainNameRepository() {
+    return this.domainNameRepository;
   }
 
   private ResponseEntity<String> createDomainName(
