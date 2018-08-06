@@ -41,6 +41,15 @@
       <version>LATEST</version>
     </dependency>
 
+    <!-- LOCAL libraries -->
+    <dependency>
+      <groupId>org.poondakfai.securegateway.oauthserver</groupId>
+      <artifactId>common</artifactId>
+      <version>1.0-SNAPSHOT</version>
+      <scope>system</scope>
+      <systemPath>${project.basedir}/lib/oauthserver-common.jar</systemPath>
+    </dependency>
+
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>

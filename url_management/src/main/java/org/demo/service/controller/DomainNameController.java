@@ -27,10 +27,11 @@ import org.demo.service.model.DomainName;
 import org.demo.service.model.CanonicalDomainName;
 import org.demo.service.model.AliasDomainName;
 import org.demo.service.model.Ipv4;
+import static org.poondakfai.securegateway.oauthserver.common.DNSApiScopes.*;
 
 
 @RestController
-@PreAuthorize("#oauth2.hasScope('read')")
+@PreAuthorize(Oauth2.HAS_SCOPE_STANDARD)
 @RequestMapping(value = "/")
 public class DomainNameController {
   private static final String DOMAINNAMES_URI           = "/domainnames";
@@ -120,6 +121,7 @@ public class DomainNameController {
       targetDomainName, HttpStatus.OK);
   }
 
+  @PreAuthorize(Oauth2.HAS_SCOPE_ADVANCE)
   @PostMapping(DomainNameController.DOMAINNAMES_URI)
   public ResponseEntity<String> createDomainName(
     @Valid @RequestBody String rawJsonStringData) {
@@ -141,6 +143,7 @@ public class DomainNameController {
   // TODO: now to update alias domain -> simple solution: delete and create a
   //       new one any way should check that client should not put an alias
   //       domain name content
+  @PreAuthorize(Oauth2.HAS_SCOPE_ADVANCE)
   @PutMapping(DomainNameController.CANONICAL_DOMAINNAMES_URI + "/{id}")
   public ResponseEntity<CanonicalDomainName> updateCanonicalDomainName(
       @PathVariable(value = "id") String domainNameId,
@@ -173,6 +176,7 @@ public class DomainNameController {
   }
 
   // Should support delete both alias and canonical domain name
+  @PreAuthorize(Oauth2.HAS_SCOPE_ADVANCE)
   @DeleteMapping(DomainNameController.DOMAINNAMES_URI + "/{id}")
   public ResponseEntity deleteDomainName(
       @PathVariable(value = "id") String domainNameId) {
